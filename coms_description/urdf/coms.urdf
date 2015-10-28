@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot name="origins">
+  <link name="base_link">
+    <visual>
+      <geometry>
+		 <box size="2.395 1.095 1.500" />
+      </geometry>
+	  <origin rpy="0 0 0" xyz="0.0 0.0 0.75" />
+    </visual>
+  </link>
+
+  <link name="velodyne">
+    <visual>
+      <geometry>
+		<cylinder radius="0.15" length="0.5" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+  </link>
+  
+  <joint name="base_to_top_velodyne" type="fixed">
+	<axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="velodyne"/>
+    <origin rpy="0 0 0" xyz="0 0 1.5"/>
+  </joint>
+
+</robot>
