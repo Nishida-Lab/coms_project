@@ -1,5 +1,7 @@
 # 3D SLAM with COMS and Velodyne
 
+![3d_slam_example](./docs/rviz_screenshot_2015_10_30-00_19_49.png "3d_slam_example")
+
 ## How to build
 
 ```bash
