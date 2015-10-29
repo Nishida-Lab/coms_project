@@ -9,10 +9,14 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  pcl_ros
+  pcl_conversions
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+
+#set(CMAKE_BUILD_TYPE Debug)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -115,6 +119,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -129,7 +134,9 @@ include_directories(
 # add_dependencies(coms_mapping ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(coms_mapping_node src/coms_mapping_node.cpp)
+add_executable(ndt_scan_matching_node src/ndt_scan_matching_node.cpp src/ndt_scan_matching.cpp)
+
+target_link_libraries(ndt_scan_matching_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

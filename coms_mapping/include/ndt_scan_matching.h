@@ -7,8 +7,8 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <velodyne_pointcloud/point_types.h>
-#include <velodyne_pointcloud/rawdata.h>
+/* #include <velodyne_pointcloud/point_types.h> */
+/* #include <velodyne_pointcloud/rawdata.h> */
 
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_datatypes.h>
@@ -24,22 +24,51 @@
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
 
+struct Position {
+    double x;
+    double y;
+    double z;
+    double roll;
+    double pitch;
+    double yaw;
+};
+
 class NDTScanMatching
 {
 public:
 	NDTScanMatching();
 	void scan_matching_callback(const sensor_msgs::PointCloud2::ConstPtr& points,
 								const geometry_msgs::PoseStamped::ConstPtr& pose);
+	void getRPY(const geometry_msgs::Quaternion &q,
+				double &roll,double &pitch,double &yaw);
 
 private:
     ros::NodeHandle nh_;
 	ros::Rate rate_;
 	message_filters::Subscriber<sensor_msgs::PointCloud2> point_cloud_sub_;
 	message_filters::Subscriber<geometry_msgs::PoseStamped> odom_sub_;
-	TimeSynchronizer<sensor_msgs::PointCloud2, geometry_msgs::PoseStamped> sync_;
+	message_filters::TimeSynchronizer<sensor_msgs::PointCloud2, geometry_msgs::PoseStamped> sync_;
 	
+	ros::Publisher point_cloud_pub_;
 
-	pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud_;
-	pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt_;
+	pcl::PointCloud<pcl::PointXYZI> last_scan_;
 
+	pcl::NormalDistributionsTransform<pcl::PointXYZI, pcl::PointXYZI> ndt_;
+
+	double offset_x_;
+	double offset_y_;
+	double offset_z_;
+	double offset_yaw_;
+
+	double last_yaw_;
+
+	Position current_pos_;
+	Position previous_pos_;
+	Position guess_pos_;
+
+	geometry_msgs::PoseStamped last_pose_;
+	tf::TransformBroadcaster br_;
+	
+	int initial_scan_loaded_;
+	int count_;
 };
