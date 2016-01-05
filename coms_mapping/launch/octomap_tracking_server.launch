@@ -1,6 +1,8 @@
 <launch>
+  <!-- <arg name="map_name" default="$(find coms_mapping)/3dmap/mapfile.ot"/> -->
+  <arg name="map_name" default="$(find coms_mapping)/mapdata/hector_mapfile.bt"/>
 	<!-- you can load an exisiting tree with <node ... args="tree.bt"> !-->
-	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen" args="$(find coms_mapping)/3dmap/mapfile.ot">
+	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen" args="$(arg map_name)">
 		<!-- <param name="resolution" value="0.02" /> -->
 		<param name="frame_id" type="string" value="map" />
 		<param name="sensor_model/max_range" value="300.0" />
